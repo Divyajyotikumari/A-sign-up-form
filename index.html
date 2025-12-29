@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owl project 3 an interactive form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <section>
+    <div class="login-box">
+        <form id="signup-form" novalidate>
+            <h2>Sign Up</h2>
+
+            <div class="input-box">
+                <input type="text" id="fullname" name="fullname" required>
+                <label>Full Name</label>
+                <small class="error" id="fullname-error" aria-live="polite"></small>
+            </div>
+
+            <div class="input-box">
+                <input type="email" id="email" name="email" required>
+                <label>Email</label>
+                <small class="error" id="email-error" aria-live="polite"></small>
+            </div>
+
+            <div class="input-box">
+                <input type="tel" id="phone" name="phone" required>
+                <label>Phone</label>
+                <small class="error" id="phone-error" aria-live="polite"></small>
+            </div>
+
+            <div class="input-box">
+                <input type="password" id="password" name="password" required>
+                <label>Password</label>
+                <small class="error" id="password-error" aria-live="polite"></small>
+            </div>
+
+            <div class="input-box">
+                <input type="password" id="confirm-password" name="confirm-password" required>
+                <label>Confirm Password</label>
+                <small class="error" id="confirm-password-error" aria-live="polite"></small>
+            </div>
+
+            <button type="submit">Sign Up</button>
+
+            <p class = "instruction">or sign up with social platforms</p>
+            <div class="social-icons">
+                <a href="https://github.com/Divyajyotikumari" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><ion-icon name="logo-github"></ion-icon></a>
+                <a href="mailto:your.email@example.com" target="_blank" rel="noopener noreferrer" aria-label="Email"><ion-icon name="mail-outline"></ion-icon></a>
+                <a href="https://www.linkedin.com/in/divya-jyoti-kumari-530707295/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><ion-icon name="logo-linkedin"></ion-icon></a>
+            </div>
+
+            <div class="register-link">
+                <p>Already have an account? <a href="#">Log in</a></p>
+            </div>
+
+            <p class="success-message" id="success-message" aria-live="polite"></p>
+        </form>
+    </div>
+<!--  -->
+
+</section>
+
+<script>
+(function(){
+  const form = document.getElementById('signup-form');
+  const successMsg = document.getElementById('success-message');
+  if(!form) return;
+
+  const inputs = form.querySelectorAll('input');
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  function validatePhone(val){
+    const digits = val.replace(/\D/g,'');
+    return digits.length === 10;
+  }
+
+  function setError(input, message){
+    input.classList.add('input-error');
+    const err = input.parentElement.querySelector('.error');
+    if(err) err.textContent = message;
+  }
+
+  function clearError(input){
+    input.classList.remove('input-error');
+    const err = input.parentElement.querySelector('.error');
+    if(err) err.textContent = '';
+  }
+
+  inputs.forEach(inp => inp.addEventListener('input', () => clearError(inp)));
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    successMsg.textContent = '';
+    let valid = true;
+
+    const fullname = document.getElementById('fullname');
+    const email = document.getElementById('email');
+    const phone = document.getElementById('phone');
+    const password = document.getElementById('password');
+    const confirm = document.getElementById('confirm-password');
+
+    [fullname,email,phone,password,confirm].forEach(clearError);
+
+    if(fullname.value.trim().length < 2){ setError(fullname,'Enter your full name (2+ characters)'); valid = false; }
+    if(!emailRegex.test(email.value.trim())){ setError(email,'Please enter a valid email'); valid = false; }
+    if(!validatePhone(phone.value)){ setError(phone,'Enter a valid 10-digit phone number'); valid = false; }
+    if(password.value.length < 8){ setError(password,'Password must be at least 8 characters'); valid = false; }
+    if(password.value !== confirm.value){ setError(confirm,'Passwords do not match'); valid = false; }
+
+    if(valid){
+      successMsg.textContent = `✅ Thanks ${fullname.value.trim()} — your registration is complete!`;
+      form.reset();
+      setTimeout(()=> successMsg.textContent = '', 6000);
+    }
+  });
+})();
+</script>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+</html>
